@@ -1,0 +1,41 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+
+struct Book {
+    int book_id;
+    std::string author_name;
+    double price;
+    int no_of_pages;
+    std::string publisher;
+    int year_of_publishing;
+
+    // Overload < operator to sort by author name
+    bool operator<(const Book& other) const {
+        return author_name < other.author_name;
+    }
+};
+/* My PArt ends here */
+int main() {
+    std::ifstream inFile("books.txt");
+    std::vector<Book> books;
+    Book book;
+
+    // Assuming the file has book details in the order: book_id, author_name, price, no_of_pages, publisher, year_of_publishing
+    while (inFile >> book.book_id >> book.author_name >> book.price >> book.no_of_pages >> book.publisher >> book.year_of_publishing) {
+        books.push_back(book);
+    }
+    inFile.close();
+
+    // Sort books by author name
+    std::sort(books.begin(), books.end());
+
+    std::ofstream outFile("sorted_books.txt");
+    for (const auto& b : books) {
+        outFile << b.book_id << " " << b.author_name << " " << b.price << " " << b.no_of_pages << " " << b.publisher << " " << b.year_of_publishing << "\n";
+    }
+    outFile.close();
+
+    return 0;
+}
